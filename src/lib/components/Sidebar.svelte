@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Video, Film, ListOrdered, Settings, LayoutTemplate } from '@lucide/svelte';
+	import { Video, Film, ListOrdered, Settings, LayoutTemplate, Images } from '@lucide/svelte';
 	import { page } from '$app/state';
 
 	const navItems = [
 		{ href: '/', label: 'Dashboard', icon: Film },
 		{ href: '/videos', label: 'Videos', icon: Video },
 		{ href: '/templates', label: 'Templates', icon: LayoutTemplate },
+		{ href: '/media', label: 'Media', icon: Images },
 		{ href: '/queue', label: 'Queue', icon: ListOrdered },
 		{ href: '/settings', label: 'Settings', icon: Settings }
 	];
@@ -21,9 +22,9 @@
 			<a
 				href={item.href}
 				class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white"
-				class:bg-slate-800={page.url.pathname === item.href}
-				class:text-white={page.url.pathname === item.href}
-				class:text-slate-400={page.url.pathname !== item.href}
+				class:bg-slate-800={item.href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(item.href)}
+				class:text-white={item.href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(item.href)}
+				class:text-slate-400={item.href === '/' ? page.url.pathname !== '/' : !page.url.pathname.startsWith(item.href)}
 			>
 				<item.icon class="h-4 w-4" />
 				{item.label}

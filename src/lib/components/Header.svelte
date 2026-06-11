@@ -1,8 +1,25 @@
 <script lang="ts">
 	import { Menu } from '@lucide/svelte';
 	import { Button } from '$lib/components/ui/button';
+	import { page } from '$app/state';
 
-	let { title = 'Dashboard' }: { title?: string } = $props();
+	const titles: Record<string, string> = {
+		'/': 'Dashboard',
+		'/videos': 'Videos',
+		'/templates': 'Templates',
+		'/media': 'Media',
+		'/queue': 'Queue',
+		'/settings': 'Settings'
+	};
+
+	function getTitle(pathname: string) {
+		for (const [path, label] of Object.entries(titles)) {
+			if (path !== '/' && pathname.startsWith(path)) return label;
+		}
+		return titles[pathname] || 'Dashboard';
+	}
+
+	const title = $derived(getTitle(page.url.pathname));
 </script>
 
 <header class="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-slate-200 bg-white px-4 md:px-6">
